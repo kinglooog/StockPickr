@@ -133,7 +133,7 @@ export default function TopicDetail() {
 
         {/* Meta */}
         <div className="text-xs text-text-secondary pt-4 border-t border-border">
-          数据更新于 {topic.update_date} · AI 生成内容仅供参考，不构成投资建议
+          数据更新于 {new Date(topic.created_at).toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})} · AI 生成内容仅供参考，不构成投资建议
         </div>
       </div>
     </div>
