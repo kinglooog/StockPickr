@@ -5,6 +5,7 @@ from datetime import date, datetime, timezone, timedelta
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from config import SCHEDULE_HOUR, SCHEDULE_MINUTE
 from enhancer import enhance_concepts
@@ -39,10 +40,9 @@ async def run_full_pipeline(db: AsyncSession, force_llm: bool = False) -> int:
     print(f"[Pipeline] Scraped {len(concepts)} concepts")
 
     # ── Step 2: Check which topics need LLM ──────────
-    # Fetch existing topics for today that already have chain data
+    # Reuse chain data if concept was ever analyzed (any date)
     result = await db.execute(
         select(Topic.code).where(
-            Topic.update_date == today,
             Topic.concept_explanation.isnot(None),
             Topic.concept_explanation != "",
         )
@@ -120,19 +120,51 @@ async def _save_topic(db: AsyncSession, ec: dict, llm: dict, today: date, now: d
 
 
 async def _update_market_data(db: AsyncSession, ec: dict, today: date):
-    """Update only market data for an existing topic (keep chain analysis)."""
+    """Copy chain data from a previous analysis, update market data for today."""
+    # Find the most recent version of this concept that has chain data
     result = await db.execute(
         select(Topic).where(
             Topic.code == ec["code"],
-            Topic.update_date == today,
-        )
+            Topic.concept_explanation.isnot(None),
+            Topic.concept_explanation != "",
+        ).options(selectinload(Topic.stocks))
+        .order_by(Topic.update_date.desc()).limit(1)
     )
-    topic = result.scalar_one_or_none()
-    if topic:
-        topic.heat_rank = ec.get("heat_rank", topic.heat_rank)
-        topic.up_down_pct = ec.get("up_down_pct")
-        topic.leading_stock = ec.get("leading_stock")
-        topic.created_at = now_cn()  # bump time to show freshness
+    prev = result.scalar_one_or_none()
+
+    if not prev:
+        return  # Shouldn't happen since we filtered earlier
+
+    # Create today's row with fresh market data + reused chain analysis
+    now = now_cn()
+    topic = Topic(
+        name=ec["name"],
+        code=ec["code"],
+        concept_explanation=prev.concept_explanation,
+        heat_rank=ec.get("heat_rank", 0),
+        up_down_pct=ec.get("up_down_pct"),
+        leading_stock=ec.get("leading_stock"),
+        upstream_desc=prev.upstream_desc,
+        midstream_desc=prev.midstream_desc,
+        downstream_desc=prev.downstream_desc,
+        llm_raw_response=prev.llm_raw_response,
+        update_date=today,
+        created_at=now,
+    )
+    db.add(topic)
+    await db.flush()
+
+    # Copy stocks from previous analysis
+    for s in prev.stocks:
+        db.add(Stock(
+            topic_id=topic.id,
+            code=s.code,
+            name=s.name,
+            chain_level=s.chain_level,
+            logic=s.logic,
+        ))
+
+    print(f"[Pipeline] Reused chain data for: {ec['name']}")
 
 
 async def _daily_job():
