@@ -28,8 +28,7 @@ async def run_full_pipeline(db: AsyncSession) -> int:
 
     # ── Step 1: Scrape ──────────────────────────────
     print(f"[Pipeline] Scraping hot concepts...")
-    async with httpx.AsyncClient(trust_env=False) as client:
-        concepts = await scrape_all(client)
+    concepts = await scrape_all()  # Let scrape_all manage client with fallback
     print(f"[Pipeline] Scraped {len(concepts)} concepts")
 
     # ── Step 2: LLM Enhance ─────────────────────────

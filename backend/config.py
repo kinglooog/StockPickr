@@ -21,7 +21,7 @@ DATABASE_URL = os.getenv(
 DEEPSEEK_API_KEY = os.getenv("STOCKPICKR_DEEPSEEK_KEY", "")
 DEEPSEEK_BASE_URL = os.getenv(
     "STOCKPICKR_DEEPSEEK_BASE_URL",
-    "https://api.deepseek.com/anthropic",
+    "https://api.deepseek.com",
 )
 
 # Scheduler

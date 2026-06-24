@@ -7,6 +7,7 @@ import asyncio
 from typing import Any
 
 import httpx
+import httpcore
 
 from config import HOT_TOPICS_COUNT
 
@@ -21,6 +22,23 @@ HEADERS = {
     ),
     "Referer": "https://quote.eastmoney.com/",
 }
+
+MAX_RETRIES = 3
+
+
+async def _get_with_retry(client: httpx.AsyncClient, url: str, **kwargs) -> httpx.Response:
+    """HTTP GET with retry on connection errors."""
+    last_err = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            return await client.get(url, **kwargs)
+        except (httpx.ConnectError, httpx.RemoteProtocolError, httpcore.ConnectError) as e:
+            last_err = e
+            if attempt < MAX_RETRIES - 1:
+                wait = 2 ** attempt
+                print(f"[Scraper] Retry {attempt+1}/{MAX_RETRIES} after {wait}s: {e}")
+                await asyncio.sleep(wait)
+    raise last_err
 
 
 async def fetch_hot_concepts(
@@ -43,7 +61,7 @@ async def fetch_hot_concepts(
         "_": "1620000000000",
     }
 
-    resp = await client.get(BASE_URL, params=params, headers=HEADERS, timeout=15)
+    resp = await _get_with_retry(client, BASE_URL, params=params, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     data = resp.json()
 
@@ -84,7 +102,7 @@ async def fetch_concept_stocks(
         "_": "1620000000000",
     }
 
-    resp = await client.get(BASE_URL, params=params, headers=HEADERS, timeout=15)
+    resp = await _get_with_retry(client, BASE_URL, params=params, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     data = resp.json()
 
@@ -106,13 +124,20 @@ async def fetch_concept_stocks(
 
 async def scrape_all(client: httpx.AsyncClient | None = None) -> list[dict[str, Any]]:
     """Scrape hot concepts and their constituent stocks.
+    Tries with system proxy first, falls back to direct connection.
 
     Returns:
         List of concepts, each with a 'stocks' key.
     """
     if client is None:
-        async with httpx.AsyncClient(trust_env=False) as client:
-            return await _do_scrape(client)
+        # Try with system proxy first
+        try:
+            async with httpx.AsyncClient(timeout=30) as client:
+                return await _do_scrape(client)
+        except (httpx.ConnectError, httpx.RemoteProtocolError, httpcore.ConnectError) as e:
+            print(f"[Scraper] Proxy failed ({e}), trying direct...")
+            async with httpx.AsyncClient(trust_env=False, timeout=30) as client:
+                return await _do_scrape(client)
     else:
         return await _do_scrape(client)
 
