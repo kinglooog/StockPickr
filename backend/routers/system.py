@@ -22,8 +22,9 @@ router = APIRouter(prefix="/api/v1", tags=["system"])
 @router.post("/refresh", response_model=RefreshResponse)
 async def refresh_data(
     db: AsyncSession = Depends(get_db),
+    force: bool = False,
 ):
-    """Manually trigger a full data refresh (scrape + LLM enhance + persist)."""
+    """Manually trigger a full data refresh. Set force=true to re-enhance all with LLM."""
     now = now_cn()
     today = date.today()
 
@@ -52,7 +53,7 @@ async def refresh_data(
 
     try:
         # Run the pipeline
-        topics_count = await run_full_pipeline(db)
+        topics_count = await run_full_pipeline(db, force_llm=force)
 
         log.status = "success"
         log.topics_count = topics_count
