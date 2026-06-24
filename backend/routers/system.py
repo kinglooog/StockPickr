@@ -1,6 +1,6 @@
 """System routes — data refresh and update logs."""
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
@@ -11,6 +11,11 @@ from models import Stock, Topic, UpdateLog
 from schemas import RefreshResponse, UpdateLogOut
 from scheduler import run_full_pipeline
 
+CN_TZ = timezone(timedelta(hours=8))
+
+def now_cn() -> datetime:
+    return datetime.now(CN_TZ).replace(tzinfo=None)
+
 router = APIRouter(prefix="/api/v1", tags=["system"])
 
 
@@ -19,7 +24,7 @@ async def refresh_data(
     db: AsyncSession = Depends(get_db),
 ):
     """Manually trigger a full data refresh (scrape + LLM enhance + persist)."""
-    now = datetime.utcnow()
+    now = now_cn()
     today = date.today()
 
     # Check if already running today
@@ -51,7 +56,7 @@ async def refresh_data(
 
         log.status = "success"
         log.topics_count = topics_count
-        log.finished_at = datetime.utcnow()
+        log.finished_at = now_cn()
 
         return RefreshResponse(
             status="success",
@@ -62,7 +67,7 @@ async def refresh_data(
     except Exception as e:
         log.status = "failed"
         log.error_msg = str(e)
-        log.finished_at = datetime.utcnow()
+        log.finished_at = now_cn()
         await db.flush()
 
         return RefreshResponse(

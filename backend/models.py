@@ -1,12 +1,19 @@
 """SQLAlchemy ORM models."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 
 from sqlalchemy import Date, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
+
+# China timezone
+CN_TZ = timezone(timedelta(hours=8))
+
+
+def now_cn() -> datetime:
+    return datetime.now(CN_TZ).replace(tzinfo=None)
 
 
 def gen_uuid() -> str:
@@ -29,7 +36,7 @@ class Topic(Base):
     downstream_desc: Mapped[str | None] = mapped_column(Text)
     llm_raw_response: Mapped[str | None] = mapped_column(Text)
     update_date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now_cn)
 
     stocks: Mapped[list["Stock"]] = relationship(
         "Stock", back_populates="topic", cascade="all, delete-orphan"

@@ -1,8 +1,14 @@
 """APScheduler configuration and full data pipeline orchestration."""
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 
-import httpx
+CN_TZ = timezone(timedelta(hours=8))
+
+
+def now_cn() -> datetime:
+    return datetime.now(CN_TZ).replace(tzinfo=None)
+
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -93,7 +99,7 @@ async def _daily_job():
         log = UpdateLog(
             update_date=today,
             status="running",
-            started_at=datetime.utcnow(),
+            started_at=now_cn(),
         )
         db.add(log)
         await db.flush()
@@ -102,14 +108,14 @@ async def _daily_job():
             count = await run_full_pipeline(db)
             log.status = "success"
             log.topics_count = count
-            log.finished_at = datetime.utcnow()
+            log.finished_at = now_cn()
             await db.commit()
             print(f"[Scheduler] Daily job completed: {count} topics")
 
         except Exception as e:
             log.status = "failed"
             log.error_msg = str(e)
-            log.finished_at = datetime.utcnow()
+            log.finished_at = now_cn()
             await db.commit()
             print(f"[Scheduler] Daily job failed: {e}")
 
