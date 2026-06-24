@@ -2,12 +2,22 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import TopThreeCards from '../components/TopThreeCards'
 import TopicRow from '../components/TopicRow'
-import { useHotTopics, useTopicList } from '../hooks/useTopics'
+import { useHotTopics, useTopicList, useRefresh } from '../hooks/useTopics'
 
 export default function HomePage() {
   const [page, setPage] = useState(1)
-  const { data: hotTopics, isLoading: hotLoading } = useHotTopics(10)
-  const { data: topicList, isLoading: listLoading } = useTopicList(page, 20)
+  const { data: hotTopics, isLoading: hotLoading, refetch: refetchHot } = useHotTopics(10)
+  const { data: topicList, isLoading: listLoading, refetch: refetchList } = useTopicList(page, 20)
+  const { mutate: doRefresh, isPending: refreshing } = useRefresh()
+
+  const handleRefresh = () => {
+    doRefresh(undefined, {
+      onSuccess: () => {
+        refetchHot()
+        refetchList()
+      },
+    })
+  }
 
   const topics = topicList?.topics ?? []
   const hot = hotTopics ?? []
@@ -22,12 +32,36 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Hero section */}
         <section className="mb-10">
-          <h1 className="font-display text-3xl font-semibold text-text-primary mb-2">
-            热点题材
-          </h1>
-          <p className="text-text-secondary text-sm">
-            A股市场今日热门概念板块，AI 产业链逻辑深度拆解
-          </p>
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="font-display text-3xl font-semibold text-text-primary mb-2">
+                热点题材
+              </h1>
+              <p className="text-text-secondary text-sm">
+                A股市场今日热门概念板块，AI 产业链逻辑深度拆解
+              </p>
+            </div>
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg
+                         bg-accent-gold/10 border border-accent-gold/30
+                         text-accent-gold text-sm font-medium
+                         hover:bg-accent-gold/20 active:scale-95
+                         disabled:opacity-50 disabled:cursor-wait
+                         transition-all"
+            >
+              <svg
+                className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                <path d="M21 3v5h-5" />
+              </svg>
+              {refreshing ? '抓取中...' : '刷新数据'}
+            </button>
+          </div>
         </section>
 
         {/* Loading state */}
@@ -117,9 +151,28 @@ export default function HomePage() {
             <h3 className="font-display text-lg font-medium text-text-primary mb-2">
               暂无数据
             </h3>
-            <p className="text-text-secondary text-sm">
-              请先触发数据刷新，或等待每日自动更新（收盘后 16:00）
+            <p className="text-text-secondary text-sm mb-6">
+              点击下方按钮抓取今日热点题材，或等待每日收盘后自动更新
             </p>
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg
+                         bg-accent-gold text-bg-primary text-sm font-semibold
+                         hover:bg-accent-gold/90 active:scale-95
+                         disabled:opacity-50 disabled:cursor-wait
+                         transition-all shadow-lg shadow-accent-gold/20"
+            >
+              <svg
+                className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                <path d="M21 3v5h-5" />
+              </svg>
+              {refreshing ? '正在抓取数据...' : '立即刷新'}
+            </button>
           </div>
         )}
       </main>
