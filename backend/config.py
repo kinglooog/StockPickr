@@ -29,5 +29,12 @@ SCHEDULE_HOUR = int(os.getenv("SCHEDULE_HOUR", "16"))  # Default: 4pm after mark
 SCHEDULE_MINUTE = int(os.getenv("SCHEDULE_MINUTE", "0"))
 
 # Scraper
-HOT_TOPICS_COUNT = int(os.getenv("HOT_TOPICS_COUNT", "20"))  # Top N concepts to track
-LLM_CONCURRENCY = int(os.getenv("LLM_CONCURRENCY", "5"))  # Max concurrent LLM calls
+HOT_TOPICS_COUNT = int(os.getenv("HOT_TOPICS_COUNT", "20"))
+LLM_CONCURRENCY = int(os.getenv("LLM_CONCURRENCY", "5"))
+
+# Non-industry concept names to filter out (market categories, not real themes)
+JUNK_CONCEPT_NAMES = {
+    "昨日打二板以上表现", "历史新高", "科技风格",
+    "百元股", "题材股", "近期新高", "昨曾涨停",
+    "低价股", "微盘股", "大盘股", "中盘股",
+}
