@@ -111,7 +111,7 @@ async def scrape_all(client: httpx.AsyncClient | None = None) -> list[dict[str, 
         List of concepts, each with a 'stocks' key.
     """
     if client is None:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(trust_env=False) as client:
             return await _do_scrape(client)
     else:
         return await _do_scrape(client)

@@ -28,7 +28,7 @@ async def run_full_pipeline(db: AsyncSession) -> int:
 
     # ── Step 1: Scrape ──────────────────────────────
     print(f"[Pipeline] Scraping hot concepts...")
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(trust_env=False) as client:
         concepts = await scrape_all(client)
     print(f"[Pipeline] Scraped {len(concepts)} concepts")
 

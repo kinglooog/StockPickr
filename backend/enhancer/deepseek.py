@@ -124,11 +124,11 @@ async def enhance_single_concept(
 
             concept["llm_raw_response"] = raw_text
             concept["llm_result"] = parsed
-            print(f"[LLM] ✓ Enhanced: {concept['name']}")
+            print(f"[LLM] OK Enhanced: {concept['name']}")
             return concept
 
         except Exception as e:
-            print(f"[LLM] ✗ Error enhancing '{concept['name']}': {e}")
+            print(f"[LLM] ERROR enhancing '{concept['name']}': {e}")
             concept["llm_raw_response"] = None
             concept["llm_result"] = None
             return concept
