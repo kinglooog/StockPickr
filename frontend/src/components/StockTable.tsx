@@ -6,6 +6,17 @@ interface Props {
   title: string
 }
 
+function eastmoneyUrl(code: string): string {
+  const c = code.trim()
+  if (!c) return '#'
+  // Shanghai: 60xxxx, 68xxxx
+  if (c.startsWith('60') || c.startsWith('68')) return `https://quote.eastmoney.com/sh${c}.html`
+  // Beijing: 8xxxxx, 4xxxxx, 83xxxx, 43xxxx
+  if (c.startsWith('8') || c.startsWith('4')) return `https://quote.eastmoney.com/bj${c}.html`
+  // Shenzhen: 00xxxx, 30xxxx, 15xxxx, 20xxxx
+  return `https://quote.eastmoney.com/sz${c}.html`
+}
+
 export default function StockTable({ stocks, levelColor, title }: Props) {
   if (stocks.length === 0) {
     return (
@@ -48,12 +59,24 @@ export default function StockTable({ stocks, levelColor, title }: Props) {
                 style={{ animationDelay: `${i * 50}ms` }}
               >
                 <td className="px-5 py-3.5">
-                  <span className="font-data text-sm text-text-secondary">{stock.code}</span>
+                  <a
+                    href={eastmoneyUrl(stock.code)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-data text-sm text-accent-gold hover:underline"
+                  >
+                    {stock.code}
+                  </a>
                 </td>
                 <td className="px-5 py-3.5">
-                  <span className="font-display text-sm font-medium text-text-primary">
+                  <a
+                    href={eastmoneyUrl(stock.code)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-display text-sm font-medium text-text-primary hover:text-accent-gold transition-colors"
+                  >
                     {stock.name}
-                  </span>
+                  </a>
                 </td>
                 <td className="px-5 py-3.5 max-w-md">
                   <p className="text-sm text-text-secondary leading-relaxed">
