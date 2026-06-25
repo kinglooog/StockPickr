@@ -89,7 +89,7 @@ export default function TopicDetail() {
               <h2 className="font-display text-lg font-medium text-text-primary">题材概念</h2>
             </div>
             <div className="bg-bg-card border border-border rounded-lg p-5">
-              <p className="text-text-primary leading-7 text-[15px]">
+              <p className="text-text-primary leading-7 text-base">
                 {topic.concept_explanation}
               </p>
             </div>
