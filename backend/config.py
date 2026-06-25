@@ -32,9 +32,14 @@ SCHEDULE_MINUTE = int(os.getenv("SCHEDULE_MINUTE", "0"))
 HOT_TOPICS_COUNT = int(os.getenv("HOT_TOPICS_COUNT", "20"))
 LLM_CONCURRENCY = int(os.getenv("LLM_CONCURRENCY", "5"))
 
-# Non-industry concept names to filter out (market categories, not real themes)
-JUNK_CONCEPT_NAMES = {
-    "昨日打二板以上表现", "历史新高", "科技风格",
-    "百元股", "题材股", "近期新高", "昨曾涨停",
-    "低价股", "微盘股", "大盘股", "中盘股",
-}
+# Non-industry concept keywords to filter out
+# Concepts matching any of these are market stats / style tags, not real themes
+JUNK_PATTERNS = [
+    "昨日", "涨停", "跌停", "连板", "首板", "打板", "触板",
+    "新高", "新低", "走强", "走弱", "较弱", "较强",
+    "微盘", "大盘", "中盘", "小盘", "百元", "低价", "高价",
+    "重仓", "风格", "题材股", "预盈", "预亏",
+    "融资融券", "转融券", "深股通", "沪股通", "创业板", "科创板",
+    "富时", "MSCI", "标普", "道琼斯",
+    "上证", "深证", "中证", "沪深300", "中证500",
+]

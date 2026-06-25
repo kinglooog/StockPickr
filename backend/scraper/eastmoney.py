@@ -10,7 +10,12 @@ import time
 from typing import Any
 from urllib.parse import urlencode
 
-from config import HOT_TOPICS_COUNT, JUNK_CONCEPT_NAMES
+from config import HOT_TOPICS_COUNT, JUNK_PATTERNS
+
+
+def _is_junk(name: str) -> bool:
+    """Check if a concept name is a market stat / style tag, not a real theme."""
+    return any(p in name for p in JUNK_PATTERNS)
 
 BASE_URL = "https://push2.eastmoney.com/api/qt/clist/get"
 
@@ -76,7 +81,7 @@ async def fetch_hot_concepts(count: int | None = None) -> list[dict[str, Any]]:
             "market_cap": item.get("f136", 0),
         }
         for item in diff
-        if item.get("f14", "") not in JUNK_CONCEPT_NAMES
+        if not _is_junk(item.get("f14", ""))
     ]
 
 
