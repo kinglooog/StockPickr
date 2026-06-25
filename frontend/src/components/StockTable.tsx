@@ -30,7 +30,7 @@ export default function StockTable({ stocks, levelColor, title }: Props) {
   return (
     <div className="bg-bg-card border border-border rounded-lg overflow-hidden">
       <div
-        className="px-4 py-2.5 border-b font-display text-sm font-medium"
+        className="px-4 py-2.5 border-b font-display text-base font-medium"
         style={{ borderColor: 'var(--color-border)', color: levelColor }}
       >
         {title}
@@ -40,7 +40,7 @@ export default function StockTable({ stocks, levelColor, title }: Props) {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border text-[11px] text-text-secondary uppercase tracking-wider">
+            <tr className="border-b border-border text-xs text-text-secondary uppercase tracking-wider">
               <th className="text-left px-4 py-2 font-medium w-[90px]">代码</th>
               <th className="text-left px-4 py-2 font-medium w-[100px]">名称</th>
               <th className="text-left px-4 py-2 font-medium">入选逻辑</th>
@@ -58,7 +58,7 @@ export default function StockTable({ stocks, levelColor, title }: Props) {
                     href={eastmoneyUrl(stock.code)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-data text-xs text-accent-gold hover:underline"
+                    className="font-data text-sm text-accent-gold hover:underline"
                   >
                     {stock.code}
                   </a>
@@ -68,13 +68,13 @@ export default function StockTable({ stocks, levelColor, title }: Props) {
                     href={eastmoneyUrl(stock.code)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-display text-xs font-medium text-text-primary hover:text-accent-gold transition-colors"
+                    className="font-display text-sm font-medium text-text-primary hover:text-accent-gold transition-colors"
                   >
                     {stock.name}
                   </a>
                 </td>
                 <td className="px-4 py-2.5">
-                  <p className="text-xs text-text-secondary leading-relaxed">
+                  <p className="text-sm text-text-secondary leading-relaxed">
                     {stock.logic || '暂无逻辑分析'}
                   </p>
                 </td>

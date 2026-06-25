@@ -18,7 +18,7 @@ export default function TopicRow({ topic, index }: Props) {
       <HeatBadge rank={topic.heat_rank} />
 
       <div className="flex-1 min-w-0">
-        <h4 className="font-display text-sm font-medium text-text-primary
+        <h4 className="font-display text-base font-medium text-text-primary
                       group-hover:text-accent-gold transition-colors truncate">
           {topic.name}
         </h4>

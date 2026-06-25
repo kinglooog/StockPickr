@@ -34,10 +34,10 @@ export default function HomePage() {
         <section className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h1 className="font-display text-2xl font-semibold text-text-primary tracking-tight">
+              <h1 className="font-display text-3xl font-semibold text-text-primary tracking-tight">
                 热点题材
               </h1>
-              <p className="text-text-secondary text-xs mt-1">
+              <p className="text-text-secondary text-sm mt-1">
                 A股市场今日热门概念板块，AI 产业链深度拆解
               </p>
             </div>
@@ -78,7 +78,7 @@ export default function HomePage() {
           <>
             <div className="flex items-center gap-2 mb-3">
               <div className="h-4 w-1 rounded-full bg-accent-gold" />
-              <h2 className="font-display text-base font-medium text-text-primary">今日最热</h2>
+              <h2 className="font-display text-lg font-medium text-text-primary">今日最热</h2>
             </div>
             <TopThreeCards topics={hot} />
           </>
@@ -89,8 +89,8 @@ export default function HomePage() {
           <>
             <div className="flex items-center gap-2 mb-3 mt-6">
               <div className="h-4 w-1 rounded-full bg-text-secondary" />
-              <h2 className="font-display text-base font-medium text-text-primary">题材热度榜</h2>
-              <span className="text-text-secondary text-xs ml-1.5">共 {total} 个</span>
+              <h2 className="font-display text-lg font-medium text-text-primary">题材热度榜</h2>
+              <span className="text-text-secondary text-sm ml-1.5">共 {total} 个</span>
             </div>
 
             <div className="border border-border rounded-lg overflow-hidden">

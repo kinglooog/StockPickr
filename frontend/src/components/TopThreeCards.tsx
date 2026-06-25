@@ -27,7 +27,7 @@ export default function TopThreeCards({ topics }: Props) {
           <div className="flex items-start justify-between mb-2.5">
             <HeatBadge rank={topic.heat_rank} size="md" />
             {topic.up_down_pct != null && (
-              <span className={`font-data text-base font-semibold ${
+              <span className={`font-data text-lg font-semibold ${
                 topic.up_down_pct >= 0 ? 'text-up-red' : 'text-down-green'
               }`}>
                 {topic.up_down_pct >= 0 ? '+' : ''}{topic.up_down_pct.toFixed(2)}%
@@ -35,7 +35,7 @@ export default function TopThreeCards({ topics }: Props) {
             )}
           </div>
 
-          <h3 className="font-display text-base font-semibold text-text-primary mb-1.5
+          <h3 className="font-display text-lg font-semibold text-text-primary mb-1.5
                         group-hover:text-accent-gold transition-colors">
             {topic.name}
           </h3>

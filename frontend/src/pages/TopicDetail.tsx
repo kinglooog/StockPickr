@@ -49,7 +49,7 @@ export default function TopicDetail() {
 
           <div className="flex items-start justify-between flex-wrap gap-x-8 gap-y-2">
             <div className="min-w-0">
-              <h1 className="font-display text-2xl font-semibold text-text-primary tracking-tight">
+              <h1 className="font-display text-3xl font-semibold text-text-primary tracking-tight">
                 {topic.name}
               </h1>
               <div className="flex items-center gap-2.5 mt-1.5">
@@ -86,10 +86,10 @@ export default function TopicDetail() {
           <section>
             <div className="flex items-center gap-2 mb-3">
               <div className="h-4 w-1 rounded-full bg-accent-gold" />
-              <h2 className="font-display text-base font-medium text-text-primary">题材概念</h2>
+              <h2 className="font-display text-lg font-medium text-text-primary">题材概念</h2>
             </div>
             <div className="bg-bg-card border border-border rounded-lg p-5">
-              <p className="text-text-primary leading-7 text-sm">
+              <p className="text-text-primary leading-7 text-[15px]">
                 {topic.concept_explanation}
               </p>
             </div>
@@ -100,7 +100,7 @@ export default function TopicDetail() {
         <section>
           <div className="flex items-center gap-2 mb-3">
             <div className="h-4 w-1 rounded-full bg-accent-gold" />
-            <h2 className="font-display text-base font-medium text-text-primary">产业链逻辑</h2>
+            <h2 className="font-display text-lg font-medium text-text-primary">产业链逻辑</h2>
           </div>
           <IndustryChainFlow
             upstream={topic.upstream_stocks}
@@ -116,7 +116,7 @@ export default function TopicDetail() {
         <section>
           <div className="flex items-center gap-2 mb-3">
             <div className="h-4 w-1 rounded-full bg-accent-gold" />
-            <h2 className="font-display text-base font-medium text-text-primary">核心标的</h2>
+            <h2 className="font-display text-lg font-medium text-text-primary">核心标的</h2>
           </div>
           <div className="space-y-3">
             <StockTable stocks={topic.upstream_stocks} levelColor="#5B9BD5" title="上游 · 原材料与零部件" />
