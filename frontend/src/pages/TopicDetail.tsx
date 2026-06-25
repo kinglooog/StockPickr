@@ -10,10 +10,10 @@ export default function TopicDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-bg-primary">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="h-8 w-32 bg-bg-card rounded animate-pulse mb-8" />
-          <div className="h-48 bg-bg-card rounded-xl animate-pulse mb-6" />
-          <div className="h-64 bg-bg-card rounded-xl animate-pulse" />
+        <div className="max-w-6xl mx-auto px-5 py-6">
+          <div className="h-7 w-24 bg-bg-card rounded animate-pulse mb-6" />
+          <div className="h-40 bg-bg-card rounded-xl animate-pulse mb-4" />
+          <div className="h-56 bg-bg-card rounded-xl animate-pulse" />
         </div>
       </div>
     )
@@ -24,9 +24,7 @@ export default function TopicDetail() {
       <div className="min-h-screen bg-bg-primary flex items-center justify-center">
         <div className="text-center">
           <h2 className="font-display text-xl text-text-primary mb-2">题材未找到</h2>
-          <Link to="/" className="text-accent-gold hover:underline text-sm">
-            返回首页
-          </Link>
+          <Link to="/" className="text-accent-gold hover:underline text-sm">返回首页</Link>
         </div>
       </div>
     )
@@ -36,51 +34,45 @@ export default function TopicDetail() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      {/* Header */}
+      {/* Header — compact */}
       <div className="border-b border-border bg-bg-card/50">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-5 py-4">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-text-secondary hover:text-text-primary
-                       transition-colors text-sm mb-4"
+            className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary transition-colors text-xs mb-3"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              strokeWidth="2" strokeLinecap="round">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M19 12H5m7-7l-7 7 7 7" />
             </svg>
-            返回列表
+            返回
           </Link>
 
-          <div className="flex items-start justify-between flex-wrap gap-4">
-            <div>
-              <h1 className="font-display text-3xl font-semibold text-text-primary">
+          <div className="flex items-start justify-between flex-wrap gap-x-8 gap-y-2">
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl font-semibold text-text-primary tracking-tight">
                 {topic.name}
               </h1>
-              <div className="flex items-center gap-3 mt-2">
-                <span className="font-data text-xs text-text-secondary bg-bg-hover px-2 py-0.5 rounded">
-                  {topic.code}
-                </span>
+              <div className="flex items-center gap-2.5 mt-1.5">
+                <span className="font-data text-[11px] text-text-secondary bg-bg-hover px-1.5 py-0.5 rounded">{topic.code}</span>
                 {topic.leading_stock && (
-                  <span className="text-sm text-text-secondary">
-                    领涨：<span className="font-data text-up-red">{topic.leading_stock}</span>
+                  <span className="text-xs text-text-secondary">
+                    领涨 <span className="font-data text-up-red">{topic.leading_stock}</span>
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 shrink-0">
               <div className="text-right">
-                <div className={`font-data text-3xl font-bold ${isUp ? 'text-up-red' : 'text-down-green'}`}>
+                <div className={`font-data text-2xl font-bold ${isUp ? 'text-up-red' : 'text-down-green'}`}>
                   {isUp ? '+' : ''}{topic.up_down_pct?.toFixed(2) ?? '—'}%
                 </div>
-                <div className="text-xs text-text-secondary mt-1">今日涨跌幅</div>
+                <div className="text-[10px] text-text-secondary mt-0.5">涨跌幅</div>
               </div>
-              <div className="h-12 w-px bg-border" />
+              <div className="h-10 w-px bg-border" />
               <div className="text-center">
-                <div className="font-data text-xl font-semibold text-accent-gold">
-                  #{topic.heat_rank}
-                </div>
-                <div className="text-xs text-text-secondary mt-1">热度排名</div>
+                <div className="font-data text-lg font-semibold text-accent-gold">#{topic.heat_rank}</div>
+                <div className="text-[10px] text-text-secondary mt-0.5">热度</div>
               </div>
             </div>
           </div>
@@ -88,27 +80,27 @@ export default function TopicDetail() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <div className="max-w-6xl mx-auto px-5 py-6 space-y-6">
         {/* Concept explanation */}
         {topic.concept_explanation && (
           <section>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-5 w-1 rounded-full bg-accent-gold" />
-              <h2 className="font-display text-lg font-medium text-text-primary">题材概念</h2>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-4 w-1 rounded-full bg-accent-gold" />
+              <h2 className="font-display text-base font-medium text-text-primary">题材概念</h2>
             </div>
-            <div className="bg-bg-card border border-border rounded-xl p-6">
-              <p className="text-text-primary leading-relaxed text-[15px]">
+            <div className="bg-bg-card border border-border rounded-lg p-5">
+              <p className="text-text-primary leading-7 text-sm">
                 {topic.concept_explanation}
               </p>
             </div>
           </section>
         )}
 
-        {/* Industry chain flow (signature element) */}
+        {/* Industry chain flow */}
         <section>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-5 w-1 rounded-full bg-accent-gold" />
-            <h2 className="font-display text-lg font-medium text-text-primary">产业链逻辑</h2>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="h-4 w-1 rounded-full bg-accent-gold" />
+            <h2 className="font-display text-base font-medium text-text-primary">产业链逻辑</h2>
           </div>
           <IndustryChainFlow
             upstream={topic.upstream_stocks}
@@ -120,20 +112,22 @@ export default function TopicDetail() {
           />
         </section>
 
-        {/* Stock tables by chain level */}
+        {/* Stock tables */}
         <section>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-5 w-1 rounded-full bg-accent-gold" />
-            <h2 className="font-display text-lg font-medium text-text-primary">核心标的</h2>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="h-4 w-1 rounded-full bg-accent-gold" />
+            <h2 className="font-display text-base font-medium text-text-primary">核心标的</h2>
           </div>
-          <StockTable stocks={topic.upstream_stocks} levelColor="#5B9BD5" title="上游 · 原材料与零部件" />
-          <StockTable stocks={topic.midstream_stocks} levelColor="#C5A35A" title="中游 · 制造与集成" />
-          <StockTable stocks={topic.downstream_stocks} levelColor="#E0854B" title="下游 · 应用与运营" />
+          <div className="space-y-3">
+            <StockTable stocks={topic.upstream_stocks} levelColor="#5B9BD5" title="上游 · 原材料与零部件" />
+            <StockTable stocks={topic.midstream_stocks} levelColor="#C5A35A" title="中游 · 制造与集成" />
+            <StockTable stocks={topic.downstream_stocks} levelColor="#E0854B" title="下游 · 应用与运营" />
+          </div>
         </section>
 
         {/* Meta */}
-        <div className="text-xs text-text-secondary pt-4 border-t border-border">
-          数据更新于 {new Date(topic.created_at).toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})} · AI 生成内容仅供参考，不构成投资建议
+        <div className="text-[11px] text-text-secondary pt-4 border-t border-border">
+          更新于 {new Date(topic.created_at).toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'})} · AI 生成内容仅供参考
         </div>
       </div>
     </div>

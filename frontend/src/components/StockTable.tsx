@@ -20,66 +20,61 @@ function eastmoneyUrl(code: string): string {
 export default function StockTable({ stocks, levelColor, title }: Props) {
   if (stocks.length === 0) {
     return (
-      <div className="bg-bg-card border border-border rounded-xl p-6 mb-4">
-        <h4 className="font-display text-base font-medium mb-3" style={{ color: levelColor }}>
-          {title}
-        </h4>
-        <p className="text-text-secondary text-sm">暂无该环节标的</p>
+      <div className="bg-bg-card border border-border rounded-lg p-4">
+        <h4 className="font-display text-sm font-medium mb-1" style={{ color: levelColor }}>{title}</h4>
+        <p className="text-text-secondary text-xs">暂无该环节标的</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-bg-card border border-border rounded-xl overflow-hidden mb-4">
+    <div className="bg-bg-card border border-border rounded-lg overflow-hidden">
       <div
-        className="px-5 py-3 border-b font-display text-base font-medium"
+        className="px-4 py-2.5 border-b font-display text-sm font-medium"
         style={{ borderColor: 'var(--color-border)', color: levelColor }}
       >
         {title}
-        <span className="ml-2 text-xs text-text-secondary font-body">
-          {stocks.length} 只标的
-        </span>
+        <span className="ml-1.5 text-[11px] text-text-secondary font-body">{stocks.length} 只</span>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border text-xs text-text-secondary uppercase tracking-wider">
-              <th className="text-left px-5 py-3 font-medium">代码</th>
-              <th className="text-left px-5 py-3 font-medium">名称</th>
-              <th className="text-left px-5 py-3 font-medium max-w-md">入选逻辑</th>
+            <tr className="border-b border-border text-[11px] text-text-secondary uppercase tracking-wider">
+              <th className="text-left px-4 py-2 font-medium w-[90px]">代码</th>
+              <th className="text-left px-4 py-2 font-medium w-[100px]">名称</th>
+              <th className="text-left px-4 py-2 font-medium">入选逻辑</th>
             </tr>
           </thead>
           <tbody>
             {stocks.map((stock, i) => (
               <tr
                 key={stock.id}
-                className="border-b border-border/50 last:border-0
-                           hover:bg-bg-hover transition-colors animate-fade-in-up"
-                style={{ animationDelay: `${i * 50}ms` }}
+                className="border-b border-border/50 last:border-0 hover:bg-bg-hover transition-colors animate-fade-in-up"
+                style={{ animationDelay: `${i * 40}ms` }}
               >
-                <td className="px-5 py-3.5">
+                <td className="px-4 py-2.5">
                   <a
                     href={eastmoneyUrl(stock.code)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-data text-sm text-accent-gold hover:underline"
+                    className="font-data text-xs text-accent-gold hover:underline"
                   >
                     {stock.code}
                   </a>
                 </td>
-                <td className="px-5 py-3.5">
+                <td className="px-4 py-2.5">
                   <a
                     href={eastmoneyUrl(stock.code)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-display text-sm font-medium text-text-primary hover:text-accent-gold transition-colors"
+                    className="font-display text-xs font-medium text-text-primary hover:text-accent-gold transition-colors"
                   >
                     {stock.name}
                   </a>
                 </td>
-                <td className="px-5 py-3.5 max-w-md">
-                  <p className="text-sm text-text-secondary leading-relaxed">
+                <td className="px-4 py-2.5">
+                  <p className="text-xs text-text-secondary leading-relaxed">
                     {stock.logic || '暂无逻辑分析'}
                   </p>
                 </td>
