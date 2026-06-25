@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-bg-primary/95 backdrop-blur border-b border-border">
-      <div className="max-w-6xl mx-auto px-5 h-12 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-5 h-12 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
           {/* Logo mark */}
           <div className="w-8 h-8 rounded-lg bg-accent-gold/15 border border-accent-gold/30 flex items-center justify-center group-hover:bg-accent-gold/25 transition-colors">

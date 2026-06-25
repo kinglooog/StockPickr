@@ -10,7 +10,7 @@ export default function TopicDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-bg-primary">
-        <div className="max-w-6xl mx-auto px-5 py-6">
+        <div className="max-w-[1400px] mx-auto px-5 py-6">
           <div className="h-7 w-24 bg-bg-card rounded animate-pulse mb-6" />
           <div className="h-40 bg-bg-card rounded-xl animate-pulse mb-4" />
           <div className="h-56 bg-bg-card rounded-xl animate-pulse" />
@@ -36,7 +36,7 @@ export default function TopicDetail() {
     <div className="min-h-screen bg-bg-primary">
       {/* Header — compact */}
       <div className="border-b border-border bg-bg-card/50">
-        <div className="max-w-6xl mx-auto px-5 py-4">
+        <div className="max-w-[1400px] mx-auto px-5 py-4">
           <Link
             to="/"
             className="inline-flex items-center gap-1 text-text-secondary hover:text-text-primary transition-colors text-xs mb-3"
@@ -80,7 +80,7 @@ export default function TopicDetail() {
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-5 py-6 space-y-6">
+      <div className="max-w-[1400px] mx-auto px-5 py-6 space-y-6">
         {/* Concept explanation */}
         {topic.concept_explanation && (
           <section>

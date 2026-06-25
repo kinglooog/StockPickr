@@ -29,7 +29,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-bg-primary">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-5 py-6">
+      <main className="max-w-[1400px] mx-auto px-5 py-6">
         {/* Hero */}
         <section className="mb-8">
           <div className="flex items-center justify-between flex-wrap gap-3">
